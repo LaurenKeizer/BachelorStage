@@ -38,7 +38,7 @@ def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, 
     '''
     Output = {}
     Output['weights'] = weight
-    Output['scales']  = scale
+    Output['scales']= scale
 
     # Input
     Output['Hxx'], Output['Hxy'], Output['MI_i'], L_i = helper.calc_MI_input(input_theory, theta, hidden_state)

@@ -1,6 +1,6 @@
 from numpy import sqrt
 
-
+seed = 362945635
 netwoksize = 1000
 sampling_rate = 5
 dt = 1./sampling_rate
