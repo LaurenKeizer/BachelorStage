@@ -39,13 +39,13 @@ def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weights)
     Output = {}
     Output['weigts'] = weights
     # Input
-    Output['Hxx'], Output['Hxy'], Output['MI_i'], L_i = helper.calc_MI_input(input_theory, theta, hidden_state)
-    Output['xhat_i'] = 1. / (1 + np.exp(-L_i))
+    Output['Hxx'], Output['Hxy'], Output['MI_i'], Output['L_i'] = helper.calc_MI_input(input_theory, theta, hidden_state)
+    Output['xhat_i'] = 1. / (1 + np.exp(-Output['L_i']))
     Output['MSE_i'] = np.sum((hidden_state - Output['xhat_i'])**2)/samples
 
     # Output
-    Output['Hxx_2'], Output['Hxy_2'], Output['MI'], L, Output['qon'], Output['qoff'] = helper.calc_MI_ideal(spiketrain, hidden_state)
-    Output['xhatspikes'] = 1./(1 + np.exp(-L))
+    Output['Hxx_2'], Output['Hxy_2'], Output['MI'], Output['L2'], Output['qon'], Output['qoff'] = helper.calc_MI_ideal(spiketrain, hidden_state)
+    Output['xhatspikes'] = 1./(1 + np.exp(-Output['L2'))
     Output['MSE'] = np.sum((hidden_state - Output['xhatspikes'])**2)/samples
     Output['F'] = Output['MI_i'] / Output['Hxx']
     Output['F_I'] = Output['MI']/Output['MI_i']

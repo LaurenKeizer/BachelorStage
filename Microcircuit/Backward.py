@@ -9,16 +9,17 @@ import Documentation.parameters as p
 from Foundations.helpers import scale_input_theory, make_spiketrain
 
 from Foundations.MI import analyze_exp
-from Old_testing.make_dynamic_experiment_ori import make_dynamic_experiments
+from Old_testing.make_dynamic_experiment_parameters import make_dynamic_experiments
 from Old_testing.currentmodel import Barrel_PC, Barrel_IN
 import pandas as pd
 
 defaultclock = p.dt*ms
 
 def backward_run(scale, weights, delay, seed):
-    [input_theory, hidden_state] = make_dynamic_experiments(p.qon_qoff_type, p.baseline, p.tau, p.factor_ron_roff, p.mean_firing_rate, p.sampling_rate, p.duration, seed = seed)
+    [input_theory, hidden_state] = make_dynamic_experiments(p.qon_qoff_type, p.duration, p.seed)
 
     inj_current = scale_input_theory(input_theory, 0, scale, p.dt)
+
 
     start_scope()
     #Initialising the neuron classes
@@ -61,7 +62,7 @@ def backward_run(scale, weights, delay, seed):
 
 def forward_run(scale, weights,seed):
 
-    [input_theory, hidden_state] = make_dynamic_experiments(p.qon_qoff_type, p.baseline, p.tau, p.factor_ron_roff, p.mean_firing_rate, p.sampling_rate, p.duration, seed)
+    [input_theory, hidden_state] = make_dynamic_experiments(p.qon_qoff_type, p.duration, p.seed)
 
     inj_current = scale_input_theory(input_theory, 0, scale, p.dt)
 

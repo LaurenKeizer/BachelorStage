@@ -66,18 +66,53 @@ def calc_MI_input(I, theta, x):
 
     return [Hxx, Hxy, MI, L]
 
-def calc_MI_ideal(spiketrain, x):
+#def calc_MI_ideal(spiketrain, x):
+##    ''' Calculate the (conditional) entropy, MI, and likelihood.
+#    '''
+#    qon, qoff, theta, w = calc_qonqoff(spiketrain, x)
+#    ## Integrate L
+#    I = spiketrain/p.dt
+#    L = np.empty(np.shape(x))
+#    L[0] = np.log(p.ron/p.roff)
+
+#   for nn in range(len(x) - 1):
+#       L[nn+1] = L[nn] + dLdt_spikes(L[nn], I[0][nn], w, theta) * p.dt
+#        if abs(L[nn+1]) > 1000:
+#            assert StopIteration('L diverges, weights too large')
+#
+#    # Calculate MI
+#    Hxx, Hxy, MI = MI_est(L, x)
+#
+#    return Hxx, Hxy, MI, L, qon, qoff
+
+def calc_MI_ideal(ron, roff, spiketrain, x, dt):
+
     ''' Calculate the (conditional) entropy, MI, and likelihood.
     '''
-    qon, qoff, theta, w = calc_qonqoff(spiketrain, x)
+## Calculate qon, qoff, w and theta
+    spikesup, spikesdown = reorder_x(x, spiketrain)
+    spikesup = np.squeeze(spikesup)
+    spikesdown = np.squeeze(spikesdown)
+
+    nspikesup = abs(np.nansum(np.nansum(spikesup)))
+    nspikesdown = abs(np.nansum(np.nansum(spikesdown)))
+    if nspikesdown == 0:
+        print('no down spikes, inventing one')
+        nspikesdown = 1
+
+    qon = nspikesup / (sum(x)*dt)
+    qoff = nspikesdown / ((len(x) - sum(x))*dt)
+    w = np.log(qon/qoff)
+    theta = qon-qoff
+    # print('w=', w, '; theta=', theta)
+
     ## Integrate L
-    I = spiketrain/p.dt
-    print(I)
+    I = spiketrain/dt
     L = np.empty(np.shape(x))
     L[0] = np.log(p.ron/p.roff)
 
     for nn in range(len(x) - 1):
-        L[nn+1] = L[nn] + dLdt_spikes(L[nn], I[0][nn], w, theta) * p.dt
+        L[nn+1] = L[nn] + dLdt_spikes(L[nn], I[0][nn], w, theta) * dt
         if abs(L[nn+1]) > 1000:
             assert StopIteration('L diverges, weights too large')
 

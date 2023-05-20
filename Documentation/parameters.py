@@ -1,7 +1,9 @@
 from numpy import sqrt
 
 seed = 362945635
-netwoksize = 1000
+
+#artifical network
+N = 1000 #networksize
 sampling_rate = 5
 dt = 1./sampling_rate
 tau_exponential_kernel = 5
@@ -11,11 +13,13 @@ factor_ron_roff = 2
 tau = 250
 ron = 1./(tau*(1+factor_ron_roff))
 roff = factor_ron_roff*ron
-mean_firing_rate = (0.1)/1000
+
+
 duration = 10*1000
 qon_qoff_type = 'balanced'
 scale = 17
 
+mean_firing_rate = (0.1)/1000
 stdq = mean_firing_rate*alpha
 kernel = 'exponential'
 regime = 1

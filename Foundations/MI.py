@@ -11,6 +11,7 @@
 import numpy as np
 import pandas as pd
 import Foundations.helpers as helper
+import Documentation.parameters as p
 
 def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, scale):
     ''' Analyzes the the hidden state and the input that was created by the ANN to
@@ -41,13 +42,13 @@ def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, 
     Output['scales']= scale
 
     # Input
-    Output['Hxx'], Output['Hxy'], Output['MI_i'], L_i = helper.calc_MI_input(input_theory, theta, hidden_state)
-    Output['xhat_i'] = 1. / (1 + np.exp(-L_i))
+    Output['Hxx'], Output['Hxy'], Output['MI_i'], Output['L_i'] = helper.calc_MI_input(input_theory, theta, hidden_state)
+    Output['xhat_i'] = 1. / (1 + np.exp(-Output['L_i']))
     Output['MSE_i'] = np.sum((hidden_state - Output['xhat_i'])**2)/samples
 
     # Output
-    Output['Hxx_2'], Output['Hxy_2'], Output['MI'], L, Output['qon'], Output['qoff'] = helper.calc_MI_ideal(spiketrain, hidden_state)
-    Output['xhatspikes'] = 1./(1 + np.exp(-L))
+    Output['Hxx_2'], Output['Hxy_2'], Output['MI'], Output['L'], Output['qon'], Output['qoff'] = helper.calc_MI_ideal(p.ron, p.roff, spiketrain, hidden_state, p.dt)
+    Output['xhatspikes'] = 1./(1 + np.exp(-Output['L']))
     Output['MSE'] = np.sum((hidden_state - Output['xhatspikes'])**2)/samples
     Output['F'] = Output['MI_i'] / Output['Hxx']
     Output['F_I'] = Output['MI']/Output['MI_i']
