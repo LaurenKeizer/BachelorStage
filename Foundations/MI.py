@@ -13,7 +13,7 @@ import pandas as pd
 import Foundations.helpers as helper
 import Documentation.parameters as p
 
-def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, scale):
+def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, scale, statemonitor):
     ''' Analyzes the the hidden state and the input that was created by the ANN to
         create the Output dictionary.
         Equations 13 & 14
@@ -52,6 +52,7 @@ def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, 
     Output['MSE'] = np.sum((hidden_state - Output['xhatspikes'])**2)/samples
     Output['F'] = Output['MI_i'] / Output['Hxx']
     Output['F_I'] = Output['MI']/Output['MI_i']
+    Output['statemon'] = statemonitor
 
     return pd.DataFrame.from_dict(Output, orient='index').T
 
