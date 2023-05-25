@@ -80,7 +80,7 @@ def forward_run(scale, weights,seed):
     PC_M = StateMonitor(PC_neuron, 'v', record=True)
     PC_S = SpikeMonitor(PC_neuron, 'v', record = True)
     IN_M = StateMonitor(IN_neuron, 'v', record=True)
-    IN_S = SpikeMonitor(PC_neuron, 'v', record = True)
+    IN_S = SpikeMonitor(IN_neuron, 'v', record = True)
 
     net2.add(PC_M, IN_M, PC_S, IN_S)
     #getting all the parameters for in the synapse
@@ -102,8 +102,8 @@ def forward_run(scale, weights,seed):
         net2.run(p.duration*ms)
         plotting(PC_M, IN_M, w1, scale)
         spiketrain = make_spiketrain(PC_S)
-        output_PC = pd.concat([output_PC, analyze_exp(hidden_state, input_theory,0, spiketrain,samples, w1, scale, PC_S.num_spikes)], axis = 0)
-        output_IN = pd.concat([output_IN, analyze_exp(hidden_state, input_theory,0, spiketrain,samples, w1, scale, IN_S.num_spikes)], axis = 0)
+        output_PC = pd.concat([output_PC, analyze_exp(hidden_state, input_theory,0, spiketrain,samples, w1, scale, PC_S.count)], axis = 0)
+        output_IN = pd.concat([output_IN, analyze_exp(hidden_state, input_theory,0, spiketrain,samples, w1, scale, IN_S.count)], axis = 0)
 
     return output_PC, output_IN, spiketrain
 

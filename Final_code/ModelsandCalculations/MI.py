@@ -10,8 +10,8 @@
 '''
 import numpy as np
 import pandas as pd
-import Foundations.helpers as helper
-import Documentation.parameters as p
+import helpers as helper
+import Final_code.Parameters as p
 
 def analyze_exp(hidden_state, input_theory, theta, spiketrain, samples, weight, scale, num_spikes):
     ''' Analyzes the the hidden state and the input that was created by the ANN to
