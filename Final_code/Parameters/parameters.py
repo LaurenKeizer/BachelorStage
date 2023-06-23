@@ -1,9 +1,10 @@
 'In this file you can find and change the parameters used in the network'
 
 from numpy import sqrt
-
+import numpy as np
 seed = 362945635
-
+#np.random.seed()
+#seed = np.random.randint(1000000000)
 #artifical network
 N = 1000 #networksize
 sampling_rate = 5
